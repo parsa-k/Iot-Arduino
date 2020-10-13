@@ -1,0 +1,202 @@
+we wrote this code on B4A.
+you can test your program with B4A-Bridge.
+we skip graphic design part becuse it is easy and up to you.
+code is:
+Build1=Default,b4a.example
+File1=Lay1.bal
+File2=Led OFF.png
+File3=Led ON.png
+File4=Led ONR.png
+File5=refresh.png
+File6=WIFI.png
+FileGroup1=Default Group
+FileGroup2=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=New Group
+FileGroup6=New Group
+Group=Default Group
+IconFile=
+Library1=core
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="5" android:targetSdkVersion="26"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.DarkTheme)~\n~'End of default text.~\n~
+Module1=Starter
+NumberOfFiles=6
+NumberOfLibraries=1
+NumberOfModules=1
+Version=9.01
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: LED
+	#VersionCode: 1
+	#VersionName: 
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: unspecified
+	#CanInstallToExternalStorage: False
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: False
+#End Region
+
+Sub Process_Globals
+	'These global variables will be declared once when the application starts.
+	'These variables can be accessed from all modules.
+
+End Sub
+
+Sub Globals
+	'These global variables will be redeclared each time the activity is created.
+	'These variables can only be accessed from this module.
+    
+	Private EditTextIP As EditText
+	Private ToggleButtonLED1 As ToggleButton
+	Dim WB As WebView
+	Dim ImgToggleButtonLED1 As BitmapDrawable
+	Dim ImgToggleButtonLED2 As BitmapDrawable
+	Private WebView1 As WebView
+	Private WebView2 As WebView
+	Private c As Button
+	Private f As Button
+	Private e As Button
+	Private WebView3 As WebView
+	Private SeekBar1 As SeekBar
+	Private Label6 As Label
+	Private ToggleButtonLED2 As ToggleButton
+	
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	'Do not forget to load the layout file created with the visual designer. For example:
+	'Activity.LoadLayout("Layout1")
+	Activity.LoadLayout("lay1")
+	
+	Private cd As ColorDrawable
+	cd.Initialize(Colors.Transparent, 0)
+	EditTextIP.Background = cd
+	
+	WB.Initialize("WB")
+	
+	ImgToggleButtonLED1.Initialize(LoadBitmap(File.DirAssets, "Led OFF.png"))
+	ImgToggleButtonLED1.Gravity = Gravity.FILL
+	ToggleButtonLED1.Background = ImgToggleButtonLED1
+	ImgToggleButtonLED2.Initialize(LoadBitmap(File.DirAssets, "Led OFF.png"))
+	ImgToggleButtonLED2.Gravity = Gravity.FILL
+	ToggleButtonLED2.Background = ImgToggleButtonLED2
+	
+	Label6.Text = "Pwm3=0"
+
+End Sub
+
+Sub Activity_Resume
+	
+	
+End Sub
+
+
+Sub ToggleButtonLED1_CheckedChange(Checked As Boolean)
+	If EditTextIP.Text = "" Then
+		ToastMessageShow("IP address cannot be empty !", False)
+		Return
+	End If
+	If Checked = False Then
+		ImgToggleButtonLED1.Initialize(LoadBitmap(File.DirAssets, "Led OFF.png"))
+		ImgToggleButtonLED1.Gravity = Gravity.FILL
+		ToggleButtonLED1.Background = ImgToggleButtonLED1
+		
+		WB.LoadUrl("http://" & EditTextIP.Text & "/arduino/led/130")
+		
+		ToastMessageShow("LED13 Off", False)
+	Else
+		ImgToggleButtonLED1.Initialize(LoadBitmap(File.DirAssets, "Led ON.png"))
+		ImgToggleButtonLED1.Gravity = Gravity.FILL
+		ToggleButtonLED1.Background = ImgToggleButtonLED1
+		
+		WB.LoadUrl("http://" & EditTextIP.Text & "/arduino/led/131")
+		
+		ToastMessageShow("LED13 On", False)
+	End If
+End Sub
+
+
+Sub c_Click
+	If EditTextIP.Text = "" Then
+		ToastMessageShow("IP address cannot be empty !", False)
+		Return
+	End If
+	WebView1.LoadUrl("http://"&EditTextIP.Text&"/arduino/temperature")
+	ToastMessageShow("Checking temperature in Celcius", False)
+End Sub
+
+Sub f_Click
+	If EditTextIP.Text = "" Then
+		ToastMessageShow("IP address cannot be empty !", False)
+		Return
+	End If
+	WebView2.LoadUrl("http://"&EditTextIP.Text&"/arduino/f")
+	ToastMessageShow("Checking temperature in Fahrenheit", False)
+End Sub
+
+Sub e_Click
+	If EditTextIP.Text = "" Then
+		ToastMessageShow("IP address cannot be empty !", False)
+		Return
+	End If
+	WebView3.LoadUrl("http://"&EditTextIP.Text&"/arduino/e")
+	ToastMessageShow("Checking status", False)
+End Sub
+
+Sub SeekBar1_ValueChanged (Value As Int, UserChanged As Boolean)
+	If EditTextIP.Text = "" Then
+		ToastMessageShow("IP address cannot be empty !", False)
+		Return
+	End If
+	If UserChanged = True Then
+		Label6.Text = "Pwm3=" & SeekBar1.Value
+		WB.LoadUrl("http://"&EditTextIP.Text&"/arduino/adac/"& SeekBar1.Value)
+		
+		
+	End If
+End Sub
+
+
+
+Sub ToggleButtonLED2_CheckedChange(Checked As Boolean)
+	If EditTextIP.Text = "" Then
+		ToastMessageShow("IP address cannot be empty !", False)
+		Return
+	End If
+	If Checked = False Then
+		ImgToggleButtonLED2.Initialize(LoadBitmap(File.DirAssets, "Led OFF.png"))
+		ImgToggleButtonLED2.Gravity = Gravity.FILL
+		ToggleButtonLED2.Background = ImgToggleButtonLED2
+		
+		WB.LoadUrl("http://" & EditTextIP.Text & "/arduino/led/120")
+		
+		ToastMessageShow("LED12 Off", False)
+	Else
+		ImgToggleButtonLED2.Initialize(LoadBitmap(File.DirAssets, "Led ONR.png"))
+		ImgToggleButtonLED2.Gravity = Gravity.FILL
+		ToggleButtonLED2.Background = ImgToggleButtonLED2
+		
+		WB.LoadUrl("http://" & EditTextIP.Text & "/arduino/led/121")
+		
+		ToastMessageShow("LED12 On", False)
+	End If
+End Sub
+
+
+
+Sub WebView1_PageFinished (Url As String)
+
+	
+End Sub
+
+Sub WebView2_PageFinished (Url As String)
+	
+End Sub
+
+Sub WebView3_PageFinished (Url As String)
+
+	
+End Sub
