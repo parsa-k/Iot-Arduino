@@ -1,0 +1,387 @@
+you can writ your code in notepad, then change its Suffix to *.html
+code is:
+
+<html>
+
+<head>
+
+<title>Arduino Yun I/O Demo</title>
+
+<script type="text/javascript">
+
+window.onload=Pinstatus;
+
+function Pinstatus(){
+
+morestatus();
+
+}
+
+function morestatus(){
+
+setTimeout(morestatus, 2000);
+
+document.getElementById("description").innerHTML = "Processing Status";
+
+server = "/arduino/status/99";
+
+request = new XMLHttpRequest();
+
+request.onreadystatechange = updateasyncstatus;
+
+request.open("GET", server, true);
+
+request.send(null);
+
+}
+
+function updateasyncstatus(){
+
+if ((request.readyState == 4) && (request.status == 200))
+
+{
+
+result = request.responseText;
+
+document.getElementById("description").innerHTML = result;
+
+fullset = result.split("#");
+
+document.getElementById("description").innerHTML = fullset;
+
+for(i = 1; i < fullset.length; i++){
+
+PinPair = fullset[i];
+
+singleset = PinPair.split("=");
+
+PN = singleset[0];
+
+Pinstatus = singleset[1];
+
+if (PN > 11)
+
+{
+
+ActNum = "action" + PN;
+
+ImgNum = "image" + PN;
+
+if (Pinstatus == 0)
+
+{
+
+PinAct = "1";
+
+image = "off.jpg";
+
+}
+
+else
+
+{
+
+PinAct = "0";
+
+image = "on.jpg";
+
+}
+
+document.getElementById(ActNum).value = PinAct;
+
+document.getElementById(ImgNum).src = image;
+
+}
+
+if (PN == 2)
+
+{
+
+ImgNum = "image" + PN;
+
+if (Pinstatus == 1)
+
+{
+
+image = "led_on.jpg";
+
+}
+
+else
+
+{
+
+image = "led_off.jpg";
+
+}
+
+document.getElementById(ImgNum).src = image;
+
+}
+
+if (PN == 3 )
+
+{
+
+PinVal = parseInt(singleset[1]);
+
+DacNum = "dac" + PN;
+
+ValNum = "valueDac" + PN;
+
+document.getElementById(DacNum).value = PinVal;
+
+document.getElementById(ValNum).innerHTML = PinVal;
+
+}
+
+if (PN.substr(0,1) == "A")
+
+{
+
+PinVal = parseFloat(singleset[1]);
+
+AnalogNum = "analog" + PN.substr(1,2);
+
+document.getElementById(AnalogNum).value = PinVal;
+
+}
+
+}
+
+}
+
+}
+
+function sendbutton(Pin,action){
+
+document.getElementById("description").innerHTML = "Processing Button Click";
+
+server = "/arduino/digital/" + Pin + "/" + action;
+
+request = new XMLHttpRequest();
+
+request.onreadystatechange = updateasyncbutton;
+
+request.open("GET", server, true);
+
+request.send(null);
+
+}
+
+function updateasyncbutton(){
+
+if ((request.readyState == 4) && (request.status == 200))
+
+{
+
+result = request.responseText;
+
+document.getElementById("description").innerHTML = result;
+
+singleset = result.split(",");
+
+PinType = singleset[0];
+
+PinNum = singleset[1];
+
+Pinstatus = singleset[2];
+
+ActNum = "action" + PinNum;
+
+ImgNum = "image" + PinNum;
+
+if (Pinstatus == 0)
+
+{
+
+PinAct = "1";
+
+image = "off.jpg";
+
+}
+
+else
+
+{
+
+PinAct = "0";
+
+image = "on.jpg";
+
+}
+
+document.getElementById(ActNum).value = PinAct;
+
+document.getElementById(ImgNum).src = image;
+
+document.getElementById("description").innerHTML = result;
+
+}
+
+}
+
+function sendDac(Pin,value){
+
+ValNum = "valueDac" + Pin;
+
+document.getElementById(ValNum).innerHTML=value;
+
+document.getElementById("description").innerHTML = "Processing Slider";
+
+server = "/arduino/dac/" + Pin + "/" + value;
+
+request = new XMLHttpRequest();
+
+request.onreadystatechange = updateasyncDac;
+
+request.open("GET", server, true);
+
+request.send(null);
+
+}
+
+function updateasyncDac(){
+
+if ((request.readyState == 4) && (request.status == 200))
+
+{
+
+result = request.responseText;
+
+singleset = result.split(",");
+
+PinType = singleset[0];
+
+PinNum = singleset[1];
+
+PinVal = parseInt(singleset[2]);
+
+DacNum = "dac" + PinNum;
+
+ValNum = "valueDac" + PinNum;
+
+document.getElementById(DacNum).value = PinVal;
+
+document.getElementById(ValNum).innerHTML = PinVal;
+
+document.getElementById("description").innerHTML = result;
+
+}
+
+}
+
+</script>
+
+</head>
+
+<font face="Arial">
+
+<table name="Table" border="1" cellpadding="6">
+
+<tr> <th align="center" colspan="6" >Input ADC</th></tr>
+
+<tr>
+
+<td align="center">
+
+Temperature in C
+
+<br>
+
+<input type="text" style="text-align: center;" name="analogA0" id="analog0" value="0" size="6" readonly/>
+
+</td>
+
+</tr>
+
+<tr> <th align="center" colspan="6" >Input digital</th></tr>
+
+<tr>
+
+<td align="center">
+
+2
+
+<br>
+
+<img src="led_off.jpg" width="50" id="image2" />
+
+</td>
+
+</tr>
+
+<tr> <th align="center" colspan="6" >DAC</th></tr>
+
+<tr>
+
+<td align="center">
+
+3
+
+<br>
+
+<input type="hidden" name="pin" value="3" id="pin3" />
+
+<input type="range" style="width: 50px; height: 30px;" id="dac3" min="0" max="255" value="0" step="1" onchange="sendDac(document.getElementById('pin3').value,
+
+this.value);"/>
+
+<br>
+
+<span id="valueDac3">0</span>
+
+</td>
+
+</tr>
+
+<tr> <th align="center" colspan="6" >Output button</th></tr>
+
+<tr>
+
+<td align="center">
+
+12
+
+<br>
+
+<input type="hidden" name="pin" value="12" id="pin12" />
+
+<input type="hidden" name="action" value="0" id="action12" />
+
+<img src="off.jpg" width="50" id="image12" onclick="sendbutton(document.getElementById('pin12').value,document.getElementById('action12').value);"/>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td align="center">
+
+13
+
+<br>
+
+<input type="hidden" name="pin" value="13" id="pin13" />
+
+<input type="hidden" name="action" value="0" id="action13" />
+
+<img src="off.jpg" width="50" id="image13" onclick="sendbutton(document.getElementById('pin13').value,document.getElementById('action13').value);"/>
+
+</td>
+
+</tr>
+
+</table>
+
+<br><br>
+
+<br><br>
+
+<p id="description"> - </p>
+
+</font>
+
+</html>
+
