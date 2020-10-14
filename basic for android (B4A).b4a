@@ -1,7 +1,9 @@
-we wrote this code on B4A.
-you can test your program with B4A-Bridge.
-we skip graphic design part becuse it is easy and up to you.
-code is:
+///we wrote this code on B4A.
+///you can test your program with B4A-Bridge.
+///we skip graphic design part becuse it is easy and up to you.
+///code is:
+
+
 Build1=Default,b4a.example
 File1=Lay1.bal
 File2=Led OFF.png
