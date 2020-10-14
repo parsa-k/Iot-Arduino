@@ -1,5 +1,5 @@
-we used the Arduino Yun board. 
-And its code is as follows:
+//we used the Arduino Yun board. 
+//And its code is as follows:
 
 
 
