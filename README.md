@@ -1,4 +1,4 @@
-# Arduino , Android , IoT , HTML
+# Arduino, Android, IoT, HTML
 In this project, we want to 
 
 * monitor the patient's temperature,
