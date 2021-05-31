@@ -31,6 +31,6 @@ information about DS1820\
 ![5](https://raw.githubusercontent.com/parsa-k/Iot-Arduino/main/inf%20%26%20Result/5.PNG)\
 \
 \
-information about arduino Yun min\
+information about Arduino Yun min\
 ![yun_by_pighixxx-d6qvbq4.png](https://raw.githubusercontent.com/parsa-k/Iot-Arduino/main/inf%20%26%20Result/yun_by_pighixxx-d6qvbq4.png)
 
