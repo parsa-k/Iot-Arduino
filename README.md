@@ -13,3 +13,7 @@ Our code has 3 parts.
 * the first part is in Arduino (IoT part).
 * the second part is in B4A ( Android App part).
 * the tried part is in HTML ( Web page part).
+# result
+\
+implemetation
+!(https://raw.githubusercontent.com/parsa-k/Iot-Arduino/main/inf%20%26%20Result/3.PNG)\
