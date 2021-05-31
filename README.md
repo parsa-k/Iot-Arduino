@@ -16,4 +16,4 @@ Our code has 3 parts.
 # result
 \
 implemetation
-!(https://raw.githubusercontent.com/parsa-k/Iot-Arduino/main/inf%20%26%20Result/3.PNG)\
+![3](https://raw.githubusercontent.com/parsa-k/Iot-Arduino/main/inf%20%26%20Result/3.PNG)\
